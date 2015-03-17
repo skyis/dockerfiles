@@ -55,6 +55,7 @@ RUN yum install -y php55-php-pecl-xdebug --enablerepo=remi --enablerepo=remi-php
 #RUN yum install -y php-phpunit-PHPUnit --enablerepo=remi --enablerepo=remi-php55
 #RUN yum install -y php-phpunit-DbUnit --enablerepo=remi --enablerepo=remi-php55
 
-
+# time zone 設定
+RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 CMD ["/bin/sh"]

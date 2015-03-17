@@ -1,0 +1,56 @@
+
+FROM centos6.6-nginx-php55   base1
+
+### conf files ###
+## ( case: use nginx )
+COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./configs/etc/nginx/conf.d/oder.conf /etc/nginx/conf.d/oder.conf
+COPY ./configs/etc/php-fpm.conf /etc/php-fpm.conf
+COPY ./configs/etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf
+
+## php.ini
+COPY ./configs/etc/php.ini /etc/php.ini
+
+## supervisord
+COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
+
+### Web/Application logs Setting ###
+## ( case: use nginx )
+RUN mkdir /var/log/app
+RUN chown -R nginx:nginx /var/log/app
+RUN chmod 766 /var/log/app
+RUN touch     /var/log/app/api-application.log
+RUN chmod 666 /var/log/app/api-application.log
+RUN touch     /var/log/app/admin-application.log
+RUN chmod 666 /var/log/app/admin-application.log
+
+### shell ###
+COPY ./scripts/git_pull_in_docker.sh /root/git_pull.sh
+COPY ./scripts/init_docker.sh /root/init.sh
+
+### SSH : for root ###
+RUN mkdir -p /root/.ssh
+RUN chmod 700 /root/.ssh
+#COPY ./configs/authorized_keys /root/.ssh/authorized_keys
+RUN chmod -R g-rwx,o-rwx /root/.ssh
+COPY ./secrets/id_rsa /root/.ssh/id_rsa
+COPY ./secrets/id_rsa.pub /root/.ssh/id_rsa.pub
+COPY ./configs/ssh.config.docker /root/.ssh/config
+RUN chmod 600 /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/config
+
+
+### git pull ###
+{% if git.branch %}
+# @MEMO : master 以外のブランチを DockerImage 内に pull したい場合は下記のいずれかで GitBranchName を設定する。
+# ENV GIT_BRANCH <GitBranchName>
+# or
+# RUN /bin/sh /root/git_pull.sh -b <GitBranchName>
+ENV GIT_BRANCH {{ git.branch }}
+{% endif %}
+{% if git.deploy_dir %}ENV GIT_DEPLOY_DIR {{ git.deploy_dir }}{% endif %}
+{% if git.repository %}ENV GIT_REPOSITORY {{ git.repository }}{% endif %}
+
+RUN /bin/sh /root/git_pull.sh
+
+EXPOSE 80
