@@ -5,8 +5,8 @@ FROM centos6.6-nginx-php55   base1
 ## ( case: use nginx )
 COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./configs/etc/nginx/conf.d/oder.conf /etc/nginx/conf.d/oder.conf
-COPY ./configs/etc/php-fpm.conf /etc/php-fpm.conf
-COPY ./configs/etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf
+COPY ./configs/etc/php-fpm.conf /opt/remi/php55/root/etc/php-fpm.conf
+COPY ./configs/etc/php-fpm.d/www.conf /opt/remi/php55/root/etc/php-fpm.d/www.conf
 
 ## php.ini
 COPY ./configs/etc/php.ini /etc/php.ini
