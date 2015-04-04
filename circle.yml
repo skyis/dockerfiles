@@ -1,3 +1,9 @@
 machine:
   services:
     - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build -t centos/nginx-php55 .
+
