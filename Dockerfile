@@ -59,3 +59,5 @@ RUN yum install -y php55-php-pecl-xdebug --enablerepo=remi --enablerepo=remi-php
 RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 CMD ["/bin/sh"]
+
+EXPOSE 80
