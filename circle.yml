@@ -7,3 +7,8 @@ dependencies:
     - docker info
     - docker build -t centos/nginx-php55 .
 
+test:
+  override:
+    - docker run -d -p 9200:9200 centos/nginx-php55; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:9200
+    
