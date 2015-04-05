@@ -45,7 +45,7 @@ RUN yum install -y php55-php-opcache --enablerepo=remi --enablerepo=remi-php55
 
 ### Python | pip ###
 RUN easy_install pip
-RUN pip install supervisor
+#RUN pip install supervisor
 RUN pip install awscli
 
 ### PHP Environment Management Tool ###
@@ -58,4 +58,12 @@ RUN yum install -y php55-php-pecl-xdebug --enablerepo=remi --enablerepo=remi-php
 # time zone 設定
 RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-CMD ["/bin/sh"]
+## supervisord
+RUN yum install --enablerepo=epel supervisor -y
+COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
+COPY ./scripts/init_docker.sh /root/init.sh
+
+CMD ["/bin/sh", "/root/init.sh"]
+
+EXPOSE 80
+
