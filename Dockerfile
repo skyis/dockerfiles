@@ -68,7 +68,7 @@ COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 #COPY ./configs/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY ./configs/etc/php-fpm.conf /opt/remi/php55/root/etc/php-fpm.conf
 COPY ./configs/etc/php-fpm.d/www.conf /opt/remi/php55/root/etc/php-fpm.d/www.conf
-COPY ./configs/etc/php.ini /opt/remi/php55/root/etc/php.ini
+#COPY ./configs/etc/php.ini /opt/remi/php55/root/etc/php.ini
 COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
 
 ## Authentication
