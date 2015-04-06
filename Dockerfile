@@ -12,15 +12,17 @@ RUN wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 RUN rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
 
 ### Common ###
-RUN yum install -y git
-RUN yum install -y gcc
+RUN yum install -y git gcc
 RUN yum install -y python-devel python27-devel python-setuptools
 RUN yum install -y openssl-devel
 RUN yum install -y libmcrypt-devel
 RUN yum install -y libyaml-devel
-RUN yum install -y sysstat
-RUN yum install -y tcpdump
+RUN yum install -y sysstat tcpdump zip
 RUN yum install -y mysql
+
+### nkf ###
+RUN wget http://mirror.centos.org/centos/6/os/x86_64/Packages/nkf-2.0.8b-6.2.el6.x86_64.rpm
+RUN rpm -ivh nkf-2.0.8b-6.2.el6.x86_64.rpm
 
 
 ### Web(NGINX + PHP) Environment ###
@@ -60,9 +62,21 @@ RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 ## supervisord
 RUN yum install --enablerepo=epel supervisor -y
-COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
-COPY ./scripts/init_docker.sh /root/init.sh
 
+## --- config files --- ##
+COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+#COPY ./configs/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY ./configs/etc/php-fpm.conf /opt/remi/php55/root/etc/php-fpm.conf
+COPY ./configs/etc/php-fpm.d/www.conf /opt/remi/php55/root/etc/php-fpm.d/www.conf
+#COPY ./configs/etc/php.ini /opt/remi/php55/root/etc/php.ini
+COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
+
+## Authentication
+RUN mkdir /var/log/app
+RUN chown -R nginx:nginx /var/log/app
+
+
+COPY ./scripts/init_docker.sh /root/init.sh
 CMD ["/bin/sh", "/root/init.sh"]
 
 EXPOSE 80
