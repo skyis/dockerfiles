@@ -34,7 +34,7 @@ RUN tar xvfz nginx-1.6.2.tar.gz && cd nginx-1.6.2 && ./configure --with-http_per
 RUN groupadd nginx && useradd -g nginx -m nginx
 COPY configs/etc/init.d/nginx.sh /etc/init.d/nginx 
 RUN chmod +x /etc/init.d/nginx
-RUN chkconfig -add nginx
+RUN chkconfig --add nginx
 
 
 RUN yum install -y php55 --enablerepo=remi --enablerepo=remi-php55
