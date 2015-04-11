@@ -12,13 +12,15 @@ RUN wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 RUN rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
 
 ### Common ###
-RUN yum install -y git gcc
+RUN yum install -y git gcc tar 
 RUN yum install -y python-devel python27-devel python-setuptools
 RUN yum install -y openssl-devel
 RUN yum install -y libmcrypt-devel
 RUN yum install -y libyaml-devel
 RUN yum install -y sysstat tcpdump zip
 RUN yum install -y mysql
+# for nginx
+RUN yum install -y pcre-devel perl-ExtUtils-Embed
 
 ### nkf ###
 RUN wget http://mirror.centos.org/centos/6/os/x86_64/Packages/nkf-2.0.8b-6.2.el6.x86_64.rpm
@@ -26,7 +28,11 @@ RUN rpm -ivh nkf-2.0.8b-6.2.el6.x86_64.rpm
 
 
 ### Web(NGINX + PHP) Environment ###
-RUN yum install -y nginx
+#RUN yum install -y nginx
+RUN wget http://nginx.org/download/nginx-1.6.2.tar.gz
+RUN tar xvfz nginx-1.6.2.tar.gz && cd nginx-1.6.2 && ./configure --with-http_perl_module && make && make install
+RUN groupadd nginx && useradd -g nginx -m nginx
+
 
 RUN yum install -y php55 --enablerepo=remi --enablerepo=remi-php55
 RUN yum install -y php55-php-mysqlnd --enablerepo=remi --enablerepo=remi-php55
