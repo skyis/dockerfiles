@@ -17,7 +17,7 @@ RUN yum install -y python-devel python27-devel python-setuptools
 RUN yum install -y openssl-devel
 RUN yum install -y libmcrypt-devel
 RUN yum install -y libyaml-devel
-RUN yum install -y sysstat tcpdump zip
+RUN yum install -y sysstat tcpdump zip rsyslog
 RUN yum install -y mysql
 # for nginx
 RUN yum install -y pcre-devel perl-ExtUtils-Embed
@@ -30,7 +30,7 @@ RUN rpm -ivh nkf-2.0.8b-6.2.el6.x86_64.rpm
 ### Web(NGINX + PHP) Environment ###
 #RUN yum install -y nginx
 RUN wget http://nginx.org/download/nginx-1.6.2.tar.gz
-RUN tar xvfz nginx-1.6.2.tar.gz && cd nginx-1.6.2 && ./configure --with-http_perl_module && make && make install
+RUN tar xvfz nginx-1.6.2.tar.gz && cd nginx-1.6.2 && ./configure --prefix=/usr/local/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/usr/local/nginx/nginx.pid --with-http_perl_module --with-http_ssl_module --user=nginx --group=nginx --error-log-path=/var/log/app --error-log-path=/var/log/app && make && make install
 RUN groupadd nginx && useradd -g nginx -m nginx
 COPY configs/etc/init.d/nginx.sh /etc/init.d/nginx 
 RUN chmod +x /etc/init.d/nginx
