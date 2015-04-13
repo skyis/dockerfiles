@@ -12,7 +12,7 @@ RUN wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 RUN rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
 
 ### Common ###
-RUN yum install -y git gcc tar 
+RUN yum install -y git gcc tar
 RUN yum install -y python-devel python27-devel python-setuptools
 RUN yum install -y openssl-devel
 RUN yum install -y libmcrypt-devel
@@ -32,7 +32,7 @@ RUN rpm -ivh nkf-2.0.8b-6.2.el6.x86_64.rpm
 RUN wget http://nginx.org/download/nginx-1.6.2.tar.gz
 RUN tar xvfz nginx-1.6.2.tar.gz && cd nginx-1.6.2 && ./configure --prefix=/usr/local/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/usr/local/nginx/nginx.pid --with-http_perl_module --with-http_ssl_module --user=nginx --group=nginx --error-log-path=/var/log/app --error-log-path=/var/log/app && make && make install
 RUN groupadd nginx && useradd -g nginx -m nginx
-COPY configs/etc/init.d/nginx.sh /etc/init.d/nginx 
+COPY configs/etc/init.d/nginx.sh /etc/init.d/nginx
 RUN chmod +x /etc/init.d/nginx
 RUN chkconfig --add nginx
 
@@ -74,7 +74,8 @@ RUN yum install --enablerepo=epel supervisor -y
 
 ## --- config files --- ##
 COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-#COPY ./configs/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir /etc/nginx/conf.d/
+COPY ./configs/etc/nginx/conf.d/nginx_default.conf /etc/nginx/conf.d/default.conf
 COPY ./configs/etc/php-fpm.conf /opt/remi/php55/root/etc/php-fpm.conf
 COPY ./configs/etc/php-fpm.d/www.conf /opt/remi/php55/root/etc/php-fpm.d/www.conf
 #COPY ./configs/etc/php.ini /opt/remi/php55/root/etc/php.ini
