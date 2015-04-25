@@ -85,6 +85,8 @@ COPY ./configs/etc/supervisord.conf /etc/supervisord.conf
 RUN mkdir /var/log/app
 RUN chown -R nginx:nginx /var/log/app
 
+# cronがPAM認証不備で動かない為
+RUN sed -i 's/.*session.*required.*pam_loginuid.so.*/session optional pam_loginuid.so/g' /etc/pam.d/crond
 
 COPY ./scripts/init_docker.sh /root/init.sh
 CMD ["/bin/sh", "/root/init.sh"]
