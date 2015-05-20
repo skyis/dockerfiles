@@ -38,6 +38,7 @@ RUN chkconfig --add nginx
 
 
 RUN yum install -y php55 --enablerepo=remi --enablerepo=remi-php55
+RUN yum install -y php55-php-cli --enablerepo=remi --enablerepo=remi-php55
 RUN yum install -y php55-php-mysqlnd --enablerepo=remi --enablerepo=remi-php55
 RUN yum install -y php55-php-fpm --enablerepo=remi --enablerepo=remi-php55
 RUN yum install -y php55-php-bcmath --enablerepo=remi --enablerepo=remi-php55
