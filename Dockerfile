@@ -17,7 +17,7 @@ RUN yum install -y python-devel python27-devel python-setuptools
 RUN yum install -y openssl-devel
 RUN yum install -y libmcrypt-devel
 RUN yum install -y libyaml-devel
-RUN yum install -y sysstat tcpdump zip rsyslog
+RUN yum install -y sysstat tcpdump zip rsyslog crond
 RUN yum install -y mysql
 # for nginx
 RUN yum install -y pcre-devel perl-ExtUtils-Embed
@@ -64,8 +64,8 @@ RUN pip install awscli
 # composer
 RUN yum install -y composer --enablerepo=remi --enablerepo=remi-php55
 RUN yum install -y php55-php-pecl-xdebug --enablerepo=remi --enablerepo=remi-php55
-#RUN yum install -y php-phpunit-PHPUnit --enablerepo=remi --enablerepo=remi-php55
-#RUN yum install -y php-phpunit-DbUnit --enablerepo=remi --enablerepo=remi-php55
+RUN yum install -y php-phpunit-PHPUnit --enablerepo=remi --enablerepo=remi-php55
+RUN yum install -y php-phpunit-DbUnit --enablerepo=remi --enablerepo=remi-php55
 
 # time zone 設定
 RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
