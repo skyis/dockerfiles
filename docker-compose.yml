@@ -1,0 +1,27 @@
+nginx:
+  image: nginx:oder
+  ports:
+   - "80:80"
+  links:
+   - phpappadminstg:php-app-admin-stg
+   - phpappadmindev:php-app-admin-dev
+  environment:
+    APPLICATION_ENV: development
+    RUN_MODE: develop
+    SESSION_SECRET:
+  volumes:
+    - /var/www/develop/oderserver/:/var/www/oderserver/
+phpappadminstg:
+  image: php:oder
+  environment:
+    APPLICATION_ENV: staging
+    RUN_MODE: staging
+  volumes:
+    - /var/www/staging/oderserver/:/var/www/oderserver/
+phpappadmindev:
+  image: php:oder
+  environment:
+    APPLICATION_ENV: development
+    RUN_MODE: develop
+  volumes:
+    - /var/www/develop/oderserver/:/var/www/oderserver/
